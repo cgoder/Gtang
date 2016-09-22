@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	log "fmt"
 	"io/ioutil"
 	"net/http"
@@ -52,7 +53,7 @@ func getBlogData(u User) {
 	if erro != nil {
 		log.Println("--->>> json unmarshal fail.")
 	}
-	log.Println(blog)
+	// log.Println(blog)
 	log.Printf("count:%d\n", blog.PostCount)
 	for _, v := range blog.PostList {
 		log.Printf("id:%s, type:%s, url:%s \n", v.ID, v.Type, v.URL)
@@ -62,9 +63,14 @@ func getBlogData(u User) {
 
 func main() {
 	var u User
-	u.Name = "reg4net"
-	u.PostCount = 0
+	flag.Parse()
 
-	getBlogData(u)
+	users := flag.Args()
+	for _, user := range users {
+		log.Println(user)
+		u.PostCount = 0
+		u.Name = user
+		getBlogData(u)
+	}
 
 }
